@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meu Treino">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Meu Treino</title>
+<style>
+:root{--bg:#f5f5f5;--card:#fff;--text:#151515;--muted:#777;--line:#e7e7e7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:10;background:rgba(245,245,245,.96);backdrop-filter:blur(12px);padding:18px 16px 12px;border-bottom:1px solid var(--line)}
+h1{font-size:26px;margin:0 0 12px}.sub{color:var(--muted);font-size:14px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:3px}
+.tab{border:1px solid #ddd;background:#fff;border-radius:999px;padding:9px 13px;white-space:nowrap;font-weight:650}.tab.active{background:#111;color:#fff;border-color:#111}
+main{max-width:720px;margin:auto;padding:16px}.daytitle{font-size:20px;font-weight:800;margin:6px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.035)}
+.photo{width:100%;height:240px;object-fit:cover;display:block;background:#eee}.content{padding:15px}.name{font-size:19px;font-weight:800}
+.meta{display:flex;gap:10px;margin:7px 0 13px;color:var(--muted);font-size:14px}
+.setrow{display:grid;grid-template-columns:62px 1fr 44px;gap:9px;align-items:center;margin:8px 0}.setno{font-size:14px;color:var(--muted)}
+input{width:100%;padding:12px;border:1px solid #d7d7d7;border-radius:11px;font-size:16px;background:#fafafa}
+input:focus{outline:2px solid #bbb;background:#fff}.check{height:44px;border-radius:11px;border:1px solid #ddd;background:#fff;font-size:19px}
+.check.done{background:#111;color:#fff}.note{margin-top:10px;font-size:12px;color:#999}.savebar{position:sticky;bottom:0;background:rgba(245,245,245,.96);backdrop-filter:blur(12px);padding:10px 0 4px}
+button.primary{width:100%;padding:13px;border:0;border-radius:13px;background:#111;color:#fff;font-weight:800;font-size:15px}
+.progress{height:7px;background:#ddd;border-radius:10px;overflow:hidden;margin:10px 0}.progress i{display:block;height:100%;background:#111;width:0}
+.footer{font-size:12px;color:#888;text-align:center;padding:10px 0 30px}
+</style></head>
+<body>
+<header><h1>Meu Treino</h1><div class="sub" id="summary">Seu treino, pesos e histórico no celular.</div><div class="tabs" id="tabs"></div></header>
+<main id="app"></main>
+<script>
+const workouts=[{"day": "Segunda — Peito + Tríceps", "name": "Supino reto", "sets": 4, "reps": "8–12", "photo": "bench-press", "photo_path": "supino-reto.jpg"}, {"day": "Segunda — Peito + Tríceps", "name": "Supino inclinado", "sets": 3, "reps": "8–12", "photo": "incline-bench-press", "photo_path": "supino-inclinado.jpg"}, {"day": "Segunda — Peito + Tríceps", "name": "Crucifixo / Peck Deck", "sets": 3, "reps": "10–15", "photo": "pec-deck", "photo_path": "peck-deck.jpg"}, {"day": "Segunda — Peito + Tríceps", "name": "Tríceps pulley", "sets": 3, "reps": "10–12", "photo": "triceps-pushdown", "photo_path": "triceps-polia.jpg"}, {"day": "Segunda — Peito + Tríceps", "name": "Tríceps francês", "sets": 3, "reps": "10–12", "photo": "triceps-extension", "photo_path": "triceps-frances.jpg"}, {"day": "Quarta — Costas + Bíceps", "name": "Puxada frontal", "sets": 4, "reps": "8–12", "photo": "lat-pulldown", "photo_path": "puxada-frontal.jpg"}, {"day": "Quarta — Costas + Bíceps", "name": "Remada baixa", "sets": 4, "reps": "8–12", "photo": "seated-cable-row", "photo_path": "remada-baixa.jpg"}, {"day": "Quarta — Costas + Bíceps", "name": "Remada unilateral", "sets": 3, "reps": "10–12", "photo": "one-arm-dumbbell-row", "photo_path": "remada-unilateral.jpg"}, {"day": "Quarta — Costas + Bíceps", "name": "Rosca direta", "sets": 3, "reps": "8–12", "photo": "barbell-curl", "photo_path": "rosca-direta.jpg"}, {"day": "Quarta — Costas + Bíceps", "name": "Rosca martelo", "sets": 3, "reps": "10–12", "photo": "hammer-curl", "photo_path": "rosca-martelo.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Agachamento", "sets": 3, "reps": "8–12", "photo": "barbell-squat", "photo_path": "agachamento.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Leg press", "sets": 3, "reps": "10–12", "photo": "leg-press", "photo_path": "leg-press.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Cadeira extensora", "sets": 3, "reps": "10–15", "photo": "leg-extension", "photo_path": "cadeira-extensora.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Mesa flexora", "sets": 3, "reps": "10–15", "photo": "leg-curl", "photo_path": "mesa-flexora.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Panturrilha", "sets": 4, "reps": "12–15", "photo": "calf-raise", "photo_path": "panturrilha.jpg"}, {"day": "Quinta — Pernas + Abdômen", "name": "Abdominal na máquina", "sets": 3, "reps": "12–15", "photo": "machine-crunch", "photo_path": "abdominal-maquina.jpg"}, {"day": "Sábado — Ombros + Complemento", "name": "Desenvolvimento", "sets": 3, "reps": "10–12", "photo": "shoulder-press", "photo_path": "desenvolvimento.jpg"}, {"day": "Sábado — Ombros + Complemento", "name": "Elevação lateral", "sets": 3, "reps": "12–15", "photo": "lateral-raise", "photo_path": "elevacao-lateral.jpg"}, {"day": "Sábado — Ombros + Complemento", "name": "Elevação posterior", "sets": 3, "reps": "12–15", "photo": "rear-delt-fly", "photo_path": "elevacao-posterior.jpg"}, {"day": "Sábado — Ombros + Complemento", "name": "Rosca direta ou tríceps pulley", "sets": 3, "reps": "10–12", "photo": "biceps-triceps", "photo_path": "rosca-direta.jpg"}, {"day": "Sábado — Ombros + Complemento", "name": "Abdominal na máquina", "sets": 3, "reps": "12–15", "photo": "machine-crunch", "photo_path": "abdominal-maquina.jpg"}];
+const storageKey="meuTreinoV2";
+const state=JSON.parse(localStorage.getItem(storageKey)||"{}");
+let currentDay=workouts[0].day;
+function save(){localStorage.setItem(storageKey,JSON.stringify(state));render()}
+function key(e,s){return e.day+"|"+e.name+"|"+s}
+function renderTabs(){const tabs=document.getElementById("tabs");tabs.innerHTML="";[...new Set(workouts.map(x=>x.day))].forEach(day=>{const b=document.createElement("button");b.className="tab"+(day===currentDay?" active":"");b.textContent=day.split(" — ")[0];b.onclick=()=>{currentDay=day;render()};tabs.appendChild(b)})}
+function render(){
+ renderTabs();const list=workouts.filter(x=>x.day===currentDay);let total=0,done=0;
+ list.forEach(e=>{for(let s=0;s<e.sets;s++){total++;if(state[key(e,s)]?.done)done++}});
+ document.getElementById("summary").textContent=`${done}/${total} séries concluídas • pesos salvos neste iPhone`;
+ const app=document.getElementById("app");app.innerHTML=`<div class="daytitle">${currentDay}</div><div class="progress"><i style="width:${total?done/total*100:0}%"></i></div>`;
+ list.forEach(e=>{
+  const card=document.createElement("section");card.className="card";let rows="";
+  for(let s=0;s<e.sets;s++){const k=key(e,s),v=state[k]||{};rows+=`<div class="setrow"><div class="setno">Série ${s+1}</div><input inputmode="decimal" placeholder="Peso (kg)" value="${v.weight||""}" data-k="${k}" data-field="weight"><button class="check ${v.done?"done":""}" data-k="${k}" data-action="done">${v.done?"✓":"○"}</button></div>`}
+  card.innerHTML=`<img class="photo" src="${e.photo_path}" alt="Demonstração: ${e.name}" loading="lazy" onerror="this.style.objectFit='contain';this.alt='Imagem indisponível: ${e.name}'"><div class="content"><div class="name">${e.name}</div><div class="meta"><span>${e.sets} séries</span><span>•</span><span>${e.reps} repetições</span></div>${rows}<div class="note">Digite o peso de cada série e toque em ✓ ao concluir.</div></div>`;
+  app.appendChild(card)
+ });
+ const bar=document.createElement("div");bar.className="savebar";bar.innerHTML='<button class="primary" id="clear">Zerar treino de hoje</button>';app.appendChild(bar);
+ app.querySelectorAll("input").forEach(inp=>inp.oninput=()=>{state[inp.dataset.k]??={};state[inp.dataset.k].weight=inp.value;localStorage.setItem(storageKey,JSON.stringify(state))});
+ app.querySelectorAll("[data-action=done]").forEach(btn=>btn.onclick=()=>{state[btn.dataset.k]??={};state[btn.dataset.k].done=!state[btn.dataset.k].done;save()});
+ document.getElementById("clear").onclick=()=>{if(confirm("Zerar séries concluídas e pesos deste treino?")){list.forEach(e=>{for(let s=0;s<e.sets;s++)delete state[key(e,s)]});save()}};
+}
+render();
+if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script></body></html>
