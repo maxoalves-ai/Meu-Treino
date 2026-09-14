@@ -1,0 +1,2 @@
+As fotos agora estão vinculadas individualmente a cada exercício, em vez de usar busca aleatória.
+A primeira versão não conseguia baixar binários diretamente do mecanismo de busca neste ambiente; por isso as imagens são URLs diretas específicas das fotos encontradas. Isso elimina as fotos aleatórias do loremflickr.
