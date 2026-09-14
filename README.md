@@ -1,25 +1,12 @@
-# Meu Treino — iPhone / GitHub Pages
+# Meu Treino
 
-## Publicação gratuita no GitHub Pages
+Versão PWA para iPhone com fotos locais no site.
 
-1. Crie uma conta em https://github.com/ (se ainda não tiver).
-2. Clique em **New repository**.
-3. Nome sugerido: `meu-treino`.
-4. Marque **Public**.
-5. Crie o repositório.
-6. Envie todos os arquivos desta pasta para o repositório.
-7. No GitHub, abra **Settings → Pages**.
-8. Em **Build and deployment**, escolha **Deploy from a branch**.
-9. Escolha a branch `main` e a pasta `/ (root)`.
-10. Salve. O GitHub fornecerá o endereço do aplicativo.
+### Publicação
+1. Substitua os arquivos do repositório pelo conteúdo deste pacote.
+2. Em Settings → Pages, selecione **GitHub Actions** como Source.
+3. Faça um novo commit/push.
+4. Em Actions, o workflow `Deploy Meu Treino to GitHub Pages` deve ficar verde.
+5. Abra o endereço do Pages e adicione ao iPhone pelo Safari → Compartilhar → Adicionar à Tela de Início.
 
-## Instalar no iPhone
-
-1. Abra o endereço no **Safari**.
-2. Toque no botão **Compartilhar**.
-3. Escolha **Adicionar à Tela de Início**.
-4. Toque em **Adicionar**.
-
-O app salva os pesos e séries concluídas no armazenamento do próprio navegador/iPhone.
-
-Observação: as fotos atualmente são carregadas de URLs externas. Para uma versão realmente independente de internet, as imagens precisam ser incorporadas ao projeto.
+As imagens dos exercícios são baixadas automaticamente durante o deploy a partir do Free Exercise DB, que informa que o dataset é de domínio público/Unlicense.
